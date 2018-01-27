@@ -32,21 +32,21 @@ class App extends React.Component {
   }
 
   lisaaKlikkaus = (arvo) => {
-    if(arvo === "hyva"){
+    if (arvo === "hyva") {
       return () => {
-        this.setState({ hyva: this.state.hyva+1 })
+        this.setState({ hyva: this.state.hyva + 1 })
       }
     }
 
-    if(arvo === "neutraali"){
+    if (arvo === "neutraali") {
       return () => {
-        this.setState({ neutraali: this.state.neutraali+1 })
+        this.setState({ neutraali: this.state.neutraali + 1 })
       }
     }
 
-    if(arvo === "huono"){
+    if (arvo === "huono") {
       return () => {
-        this.setState({ huono: this.state.huono+1 })
+        this.setState({ huono: this.state.huono + 1 })
       }
     }
 
@@ -100,30 +100,41 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-const Statistic = ({name, value}) => {
+const Statistic = ({ name, value }) => {
+
+  if (name === "hyva" || name === "neutraali" || name === "huono") {
+    return (
+      <tr><td>{name}</td><td>{value} kpl</td></tr>
+    )
+  } else if (name === "keskiarvo"){
+    return (
+      <tr><td>{name}</td><td>{value}</td></tr>
+    )
+  }
+
   return (
-    <div>{name} {value}</div>
+    <tr><td>{name}</td><td>{value} %</td></tr>
   )
+
 }
 
 const Statistics = ({ hyva, neutraali, huono }) => {
 
   let total = hyva + neutraali + huono
-  if (total == 0) {
+  if (total === 0) {
     return (
       <div>ei yhtään palautetta annettu</div>
     )
   } else {
-    let keskiarvo = 1*hyva + 0*neutraali -1 * huono;
+    let keskiarvo = 1 * hyva + 0 * neutraali - 1 * huono;
     return (
-      <div>
-        <Statistic name="hyva" value={hyva}/>
-        <Statistic name="neutraali" value={neutraali}/>
-        <Statistic name="huono" value={huono}/>
-
-        <Statistic name="keskiarvo" value={keskiarvo/total}/>
-        <Statistic name="positiivisia" value={hyva/(hyva+huono)}/>
-      </div>
+      <tbody>
+        <Statistic name="hyva" value={hyva} />
+        <Statistic name="neutraali" value={neutraali} />
+        <Statistic name="huono" value={huono} />
+        <Statistic name="keskiarvo" value={keskiarvo / total} />
+        <Statistic name="positiivisia" value={hyva / (hyva + huono)} />
+      </tbody>
     )
   }
 
