@@ -7,7 +7,8 @@ class App extends React.Component {
     this.state = {
       hyva : 0,
       neutraali : 0,
-      huono : 0
+      huono : 0,
+      keskiarvo : 0
     }
   }
 
@@ -30,6 +31,20 @@ class App extends React.Component {
     })
   }
 
+  laskeKeskiarvo = () => {
+  
+    let painotettusumma = 1 * this.state.hyva +  0 * this.state.neutraali + this.state.huono * -1;
+
+    return painotettusumma / (this.state.hyva+this.state.neutraali+this.state.huono);
+  }
+
+  laskePositiivisuusProsentti = () => {
+    let positiiviset = this.state.hyva;
+    let negatiiviset = this.state.huono;
+
+    return positiiviset/ (positiiviset+negatiiviset);
+  }
+
 
   render (){
     
@@ -40,14 +55,15 @@ class App extends React.Component {
       <button onClick={this.klikNeutraali}>neutraali</button>
       <button onClick={this.klikHuono}>huono</button>
       <h1>statistiikka</h1>
-      <p>hyvä {this.state.hyva}</p>
-      <p>neutraali {this.state.neutraali}</p>
-      <p>huono {this.state.huono}</p>
+      <div>hyvä {this.state.hyva}</div>
+      <div>neutraali {this.state.neutraali}</div>
+      <div>huono {this.state.huono}</div>
+      <div>keskiarvo {this.laskeKeskiarvo()}</div>
+      <div>positiivisia {this.laskePositiivisuusProsentti()} %</div>
     </div>
     )
   }
 }
-
 
 
 
