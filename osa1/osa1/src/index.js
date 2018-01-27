@@ -2,149 +2,46 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 class App extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      hyva: 0,
-      neutraali: 0,
-      huono: 0,
-      keskiarvo: 0
+      selected: 0
     }
   }
 
+  selectRandom = () => {
 
-  klikHyva = () => {
-    this.setState({
-      hyva: this.state.hyva + 1
-    })
+
+
+    let random = Math.floor(Math.random() * 5) + 1;
+    
+
+
+
+    this.setState({selected: random})
   }
-
-  klikNeutraali = () => {
-    this.setState({
-      neutraali: this.state.neutraali + 1
-    })
-  }
-
-  klikHuono = () => {
-    this.setState({
-      huono: this.state.huono + 1
-    })
-  }
-
-  lisaaKlikkaus = (arvo) => {
-    if (arvo === "hyva") {
-      return () => {
-        this.setState({ hyva: this.state.hyva + 1 })
-      }
-    }
-
-    if (arvo === "neutraali") {
-      return () => {
-        this.setState({ neutraali: this.state.neutraali + 1 })
-      }
-    }
-
-    if (arvo === "huono") {
-      return () => {
-        this.setState({ huono: this.state.huono + 1 })
-      }
-    }
-
-
-
-  }
-
-
-  laskeKeskiarvo = () => {
-
-    let painotettusumma = 1 * this.state.hyva + 0 * this.state.neutraali + this.state.huono * -1;
-
-    return painotettusumma / (this.state.hyva + this.state.neutraali + this.state.huono);
-  }
-
-
-  laskePositiivisuusProsentti = () => {
-    let positiiviset = this.state.hyva;
-    let negatiiviset = this.state.huono;
-
-    return positiiviset / (positiiviset + negatiiviset);
-  }
-
 
   render() {
-
     return (
       <div>
-        <h1>anna palautetta</h1>
-        <Button handleClick={this.lisaaKlikkaus("hyva")} text="hyva" />
-        <Button handleClick={this.lisaaKlikkaus("neutraali")} text="neutraali" />
-        <Button handleClick={this.lisaaKlikkaus("huono")} text="huono" />
-
-
-        <h1>statistiikka</h1>
-        <Statistics hyva={this.state.hyva} neutraali={this.state.neutraali} huono={this.state.huono} />
-
-
-
+        {this.props.anecdotes[this.state.selected]}
+        <br></br>
+        <button onClick={this.selectRandom}>next anecdote</button>
       </div>
     )
   }
 }
 
-
-
-
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>
-    {text}
-  </button>
-)
-
-const Statistic = ({ name, value }) => {
-
-  if (name === "hyva" || name === "neutraali" || name === "huono") {
-    return (
-      <tr><td>{name}</td><td>{value} kpl</td></tr>
-    )
-  } else if (name === "keskiarvo"){
-    return (
-      <tr><td>{name}</td><td>{value}</td></tr>
-    )
-  }
-
-  return (
-    <tr><td>{name}</td><td>{value} %</td></tr>
-  )
-
-}
-
-const Statistics = ({ hyva, neutraali, huono }) => {
-
-  let total = hyva + neutraali + huono
-  if (total === 0) {
-    return (
-      <div>ei yhtään palautetta annettu</div>
-    )
-  } else {
-    let keskiarvo = 1 * hyva + 0 * neutraali - 1 * huono;
-    return (
-      <tbody>
-        <Statistic name="hyva" value={hyva} />
-        <Statistic name="neutraali" value={neutraali} />
-        <Statistic name="huono" value={huono} />
-        <Statistic name="keskiarvo" value={keskiarvo / total} />
-        <Statistic name="positiivisia" value={hyva / (hyva + huono)} />
-      </tbody>
-    )
-  }
-
-
-}
-
-
-
+const anecdotes = [
+  'If it hurts, do it more often',
+  'Adding manpower to a late software project makes it later!',
+  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+  'Premature optimization is the root of all evil.',
+  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
+]
 
 ReactDOM.render(
-  <App />,
+  <App anecdotes={anecdotes} />,
   document.getElementById('root')
 )
