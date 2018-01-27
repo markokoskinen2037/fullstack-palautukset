@@ -1,69 +1,58 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const App = () => {
-  const kurssi = {
-    nimi: 'Half Stack -sovelluskehitys',
-    osat: [
-      {
-        nimi: 'Reactin perusteet',
-        tehtavia: 10
-      },
-      {
-        nimi: 'Tiedonvälitys propseilla',
-        tehtavia: 7
-      },
-      {
-        nimi: 'Komponenttien tila',
-        tehtavia: 14
-      }
-    ]
+class App extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      hyva : 0,
+      neutraali : 0,
+      huono : 0
+    }
   }
 
-  return (
+
+  klikHyva = () => {
+    this.setState({
+      hyva: this.state.hyva+1
+    })
+  }
+
+  klikNeutraali = () => {
+    this.setState({
+      neutraali: this.state.neutraali+1
+    })
+  }
+
+  klikHuono = () => {
+    this.setState({
+      huono: this.state.huono+1
+    })
+  }
+
+
+  render (){
+    
+    return (
     <div>
-      <Otsikko kurssi={kurssi.nimi}/>
-      <Sisalto osat={kurssi.osat}/>
-      <Yhteensa osat={kurssi.osat}/>
+      <h1>anna palautetta</h1>
+      <button onClick={this.klikHyva}>hyva</button>
+      <button onClick={this.klikNeutraali}>neutraali</button>
+      <button onClick={this.klikHuono}>huono</button>
+      <h1>statistiikka</h1>
+      <p>hyvä {this.state.hyva}</p>
+      <p>neutraali {this.state.neutraali}</p>
+      <p>huono {this.state.huono}</p>
     </div>
-  )
+    )
+  }
 }
 
-const Otsikko = (props) => {
-  return (
-    <div>
-      <h1>{props.kurssi}</h1>
-    </div>
-  )
-}
 
-const Sisalto = (props) => {
-  return (
-    <div>
-      <Osa nimi={props.osat[0].nimi} tehtavamaara={props.osat[0].tehtavia}/>
-      <Osa nimi={props.osat[1].nimi} tehtavamaara={props.osat[1].tehtavia}/>
-      <Osa nimi={props.osat[2].nimi} tehtavamaara={props.osat[2].tehtavia}/>
-    </div>
-  )
-}
 
-const Yhteensa = (props) => {
-  let sum = 0;
-  props.osat.forEach(element => {
-     sum = sum + element.tehtavia;
-  });
-  return (
-    <div>
-      <p>yhteensä {sum} tehtävää</p>
-    </div>
-  )
-}
 
-const Osa = (props) => {
-  return (
-    <p>{props.nimi} {props.tehtavamaara}</p>
-  )
-}
+
+
 
 ReactDOM.render(
   <App />,
