@@ -69,7 +69,6 @@ class App extends React.Component {
 
 
 
-
 const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>
     {text}
