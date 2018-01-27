@@ -31,6 +31,30 @@ class App extends React.Component {
     })
   }
 
+  lisaaKlikkaus = (arvo) => {
+    if(arvo === "hyva"){
+      return () => {
+        this.setState({ hyva: this.state.hyva+1 })
+      }
+    }
+
+    if(arvo === "neutraali"){
+      return () => {
+        this.setState({ neutraali: this.state.neutraali+1 })
+      }
+    }
+
+    if(arvo === "huono"){
+      return () => {
+        this.setState({ huono: this.state.huono+1 })
+      }
+    }
+
+
+
+  }
+
+
   laskeKeskiarvo = () => {
 
     let painotettusumma = 1 * this.state.hyva + 0 * this.state.neutraali + this.state.huono * -1;
@@ -52,9 +76,10 @@ class App extends React.Component {
     return (
       <div>
         <h1>anna palautetta</h1>
-        <Button handleClick={this.klikHyva} text="hyva" />
-        <Button handleClick={this.klikNeutraali} text="neutraali" />
-        <Button handleClick={this.klikHuono} text="huono" />
+        <Button handleClick={this.lisaaKlikkaus("hyva")} text="hyva" />
+        <Button handleClick={this.lisaaKlikkaus("neutraali")} text="neutraali" />
+        <Button handleClick={this.lisaaKlikkaus("huono")} text="huono" />
+
 
         <h1>statistiikka</h1>
         <Statistics hyva={this.state.hyva} neutraali={this.state.neutraali} huono={this.state.huono} />
