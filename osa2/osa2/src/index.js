@@ -34,16 +34,22 @@ const App = () => {
 
 
 const Kurssi = ({kurssi}) => {
+    console.log(kurssi)
     return (
         <div>
             <h1>{kurssi.nimi}</h1>
             {kurssi.osat.map(osa => <p key={osa.id}>{osa.nimi} {osa.tehtavia}</p>)}
+            <p>yhteensä {tehtavienSumma(kurssi)} tehtävää</p>
         </div>
     )
 }
 
 
-
+function tehtavienSumma(kurssi) {
+    let sum = 0;
+    kurssi.osat.map(osa => sum = sum+osa.tehtavia)
+    return (sum)
+}
 
 
 
