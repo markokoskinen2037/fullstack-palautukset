@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Kurssit from './Kurssi.js'
 
 
 const App = () => {
@@ -46,60 +47,11 @@ const App = () => {
   
     return (
       <div>
-          <h1>Opetusohjelma</h1>
+          <h1 id="otsikko">Opetusohjelma</h1>
         <Kurssit kurssit={kurssit}/>
       </div>
     )
   }
-
-const Kurssit = ({kurssit}) => {
-    return (
-        kurssit.map(kurssi =>
-            <div>
-                <Kurssi kurssi={kurssi}/>
-            </div>
-        )
-        
-    )
-}
-
-
-const Kurssi = ({kurssi}) => {
-    return (
-        <div>
-            <h1>{kurssi.nimi}</h1>
-            {kurssi.osat.map(osa => <p key={osa.id}>{osa.nimi} {osa.tehtavia}</p>)}
-            <p>yhteensä {tehtavienSumma(kurssi)} tehtävää</p>
-        </div>
-    )
-}
-
-
-function tehtavienSumma(kurssi) {
-
-    const array = []
-
-    kurssi.osat.forEach(element =>{
-        array.push(element.tehtavia)
-
-    })
-
-    var total = array.reduce(function(sum,order) {
-        return sum + order
-
-    },0)
-
-    return total;
-
-
-}
-
-
-
-
-
-
-
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
