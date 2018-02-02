@@ -34,7 +34,6 @@ const App = () => {
 
 
 const Kurssi = ({kurssi}) => {
-    console.log(kurssi)
     return (
         <div>
             <h1>{kurssi.nimi}</h1>
@@ -46,9 +45,22 @@ const Kurssi = ({kurssi}) => {
 
 
 function tehtavienSumma(kurssi) {
-    let sum = 0;
-    kurssi.osat.map(osa => sum = sum+osa.tehtavia)
-    return (sum)
+
+    const array = []
+
+    kurssi.osat.forEach(element =>{
+        array.push(element.tehtavia)
+
+    })
+
+    var total = array.reduce(function(sum,order) {
+        return sum + order
+
+    },0)
+
+    return total;
+
+
 }
 
 
