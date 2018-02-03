@@ -20,12 +20,26 @@ class App extends React.Component {
       id: this.state.newName
     }
 
-    const persons = this.state.persons.concat(personObject)
+    let dublicate = false
+    this.state.persons.forEach(person => {
+      if(person.name === personObject.name){
+        dublicate = true;
+      }
+    });
+    
+    if(!dublicate){ 
+      const persons = this.state.persons.concat(personObject)
+      this.setState({
+        persons,
+        newName: ""
+      })
+    } else {
+      this.setState({
+        newName: ""
+      })
+    }
+    
 
-    this.setState({
-      persons,
-      newName: ""
-    })
 
   }
 
