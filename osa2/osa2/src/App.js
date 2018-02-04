@@ -1,4 +1,5 @@
 import React from 'react';
+import PhoneBookEntry from "./PhoneBookEntry.js"
 
 class App extends React.Component {
   constructor(props) {
@@ -65,15 +66,18 @@ class App extends React.Component {
 
     let personsToShow = [];
 
-    if(this.state.filter !== ''){
+    if (this.state.filter !== '') {
       personsToShow = this.state.persons.filter(person => person.name.indexOf(this.state.filter) > -1)
       console.log(personsToShow)
     } else {
       personsToShow = this.state.persons
       console.log(personsToShow)
     }
-    
-   
+
+
+
+  
+
 
     return (
       <div>
@@ -99,7 +103,7 @@ class App extends React.Component {
 
         <h2>Numerot</h2>
         <ul>
-          {personsToShow.map(person => <li key={person.name}>{person.name} {person.number}</li>)}
+          {personsToShow.map(person => <PhoneBookEntry key={person.name} person={person}/>)}
         </ul>
       </div>
     )
