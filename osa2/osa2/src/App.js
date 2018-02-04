@@ -1,12 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-
+import PhoneBookEntry from "./PhoneBookEntry.js"
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      countries: [],
+      persons: [],
+      newName: '',
+      newNumber: '',
       filter: ''
     }
   }
@@ -15,64 +17,79 @@ class App extends React.Component {
     console.log("will mount...")
 
     axios
-      .get("https://restcountries.eu/rest/v2/all")
+      .get("http://localhost:3001/persons")
       .then(response => {
         console.log("promise fulfilled")
-        this.setState({ countries: response.data })
+        this.setState({ persons: response.data })
       })
   }
 
+  addPerson = (event) => {
+    event.preventDefault()
+    console.log("click")
+
+    const personObject = {
+      name: this.state.newName,
+      id: this.state.newName,
+      number: this.state.newNumber
+    }
+
+    let dublicate = false
+    this.state.persons.forEach(person => {
+      if (person.name === personObject.name) {
+        dublicate = true;
+      }
+    });
+
+    if (!dublicate) { //Ei dublikaatti, lisätään tietokantaan
+
+      axios
+        .post("http://localhost:3001/persons", personObject)
+        .then(response => {
+          this.setState({
+            persons: this.state.persons.concat(response.data),
+            newName: "",
+            newNumber: ""
+          })
+        })
 
 
 
+    } else { //Dublikaatti, nollataan nimikenttä ja numerokenttä
+      this.setState({
+        newName: "",
+        newNumber: ""
+      })
+    }
+
+
+
+  }
+
+  handleNameChange = (event) => {
+    this.setState({ newName: event.target.value })
+  }
+
+  handleNumberChange = (event) => {
+    this.setState({ newNumber: event.target.value })
+  }
 
   handleFilterChange = (event) => {
     this.setState({ filter: event.target.value })
   }
 
-
   render() {
 
-    let countriesToShow = [];
+    let personsToShow = [];
 
-    countriesToShow = this.state.countries.filter(country => country.name.includes(this.state.filter))
-    console.log(countriesToShow)
-    console.log(this.state.filter)
-
-    if (countriesToShow.length > 10) {
-      return (
-        <div>
-          <div onChange={this.handleFilterChange}>
-            find countries: <input />
-          </div>
-
-          <div>
-            <p>too many countries found, please be more specific</p>
-          </div>
-        </div>
-      )
+    if (this.state.filter !== '') {
+      personsToShow = this.state.persons.filter(person => person.name.indexOf(this.state.filter) > -1)
+      console.log(personsToShow)
+    } else {
+      personsToShow = this.state.persons
+      console.log(personsToShow)
     }
 
-    if (countriesToShow.length === 1) {
-      return (
-        <div>
-
-          <div onChange={this.handleFilterChange}>
-            find countries: <input />
-          </div>
-
-          <h2>{countriesToShow[0].name}</h2>
-
-          <p>capital: {countriesToShow[0].capital}</p>
-
-          <p>pop: {countriesToShow[0].population}</p>
-
-          <img width="200px" src={countriesToShow[0].flag}/>
-
-
-        </div>
-      )
-    }
 
 
 
@@ -80,13 +97,30 @@ class App extends React.Component {
 
     return (
       <div>
-        <div onChange={this.handleFilterChange}>
-          find countries: <input />
-        </div>
+        <h2>Puhelinluettelo</h2>
 
-        <div>
-          {countriesToShow.map(country => <p key={country.name}>{country.name}</p>)}
-        </div>
+
+        <div onChange={this.handleFilterChange}>rajaa näytettäviä: <input /></div>
+
+
+        <h2>Lisää uusi:</h2>
+        <form onSubmit={this.addPerson} >
+          <div onChange={this.handleNameChange}>
+            nimi: <input value={this.state.newName} />
+          </div>
+          <div onChange={this.handleNumberChange}>
+            numero: <input />
+          </div>
+          <div>
+            <button type="submit">lisää</button>
+          </div>
+        </form>
+
+
+        <h2>Numerot</h2>
+        <ul>
+          {personsToShow.map(person => <PhoneBookEntry key={person.name} person={person} />)}
+        </ul>
       </div>
     )
   }
