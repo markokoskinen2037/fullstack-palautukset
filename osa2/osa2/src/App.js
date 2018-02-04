@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import PhoneBookEntry from "./PhoneBookEntry.js"
+import PersonService from "./services/persons.js"
 
 class App extends React.Component {
   constructor(props) {
@@ -16,11 +17,10 @@ class App extends React.Component {
   componentDidMount() {
     console.log("will mount...")
 
-    axios
-      .get("http://localhost:3001/persons")
+    PersonService
+      .getAll()
       .then(response => {
-        console.log("promise fulfilled")
-        this.setState({ persons: response.data })
+        this.setState({persons: response.data})
       })
   }
 
@@ -43,8 +43,8 @@ class App extends React.Component {
 
     if (!dublicate) { //Ei dublikaatti, lisätään tietokantaan
 
-      axios
-        .post("http://localhost:3001/persons", personObject)
+      PersonService
+        .create(personObject)
         .then(response => {
           this.setState({
             persons: this.state.persons.concat(response.data),
