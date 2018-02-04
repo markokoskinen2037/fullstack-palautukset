@@ -13,13 +13,14 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     console.log("will mount...")
+
     axios
       .get("http://localhost:3001/persons")
       .then(response => {
         console.log("promise fulfilled")
-        this.setState({ persons: response.data})
+        this.setState({ persons: response.data })
       })
   }
 
@@ -82,7 +83,7 @@ class App extends React.Component {
 
 
 
-  
+
 
 
     return (
@@ -109,7 +110,7 @@ class App extends React.Component {
 
         <h2>Numerot</h2>
         <ul>
-          {personsToShow.map(person => <PhoneBookEntry key={person.name} person={person}/>)}
+          {personsToShow.map(person => <PhoneBookEntry key={person.name} person={person} />)}
         </ul>
       </div>
     )
